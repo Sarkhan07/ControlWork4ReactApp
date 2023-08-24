@@ -6,7 +6,10 @@ const Home = () => {
         <div>
             <h1>Home</h1>
             <p>Welcome to the Home Page</p>
-            <GetDataFromUrl url="https://jsonplaceholder.typicode.com/posts" />
+            <GetDataFromUrl
+                url="https://jsonplaceholder.typicode.com/posts"
+                fieldsToShow={['title', 'body']}
+            />
         </div>
     );
 };

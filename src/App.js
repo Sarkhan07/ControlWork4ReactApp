@@ -4,20 +4,21 @@ import Home from './Home';
 import User from './User';
 import Photo from './Photo';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.css';
 
 function App() {
     return (
         <Router>
             <div className="App">
-                <nav>
-                    <ul>
-                        <li>
+                <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                    <ul className="navbar-nav">
+                        <li className="nav-item mx-3">
                             <Link to="/">Home</Link>
                         </li>
-                        <li>
+                        <li className="nav-item mx-3">
                             <Link to="/User">User</Link>
                         </li>
-                        <li>
+                        <li className="nav-item mx-3">
                             <Link to="/Photo">Photo</Link>
                         </li>
                     </ul>
