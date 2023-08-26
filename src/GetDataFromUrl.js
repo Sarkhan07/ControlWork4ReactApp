@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { setData } from './Action'; // Импортируйте действия из соответствующего файла
+import { setData } from './Action';
 import Store from './Store';
-import Modal from './Modal'; // Подразумевается, что у вас есть компонент Modal
+import Modal from './Modal';
 
 const GetDataFromUrl = ({ url, fieldsToShow, modalFieldsToShow }) => {
     const [loading, setLoading] = useState(true);
@@ -15,6 +15,10 @@ const GetDataFromUrl = ({ url, fieldsToShow, modalFieldsToShow }) => {
         [fieldsToShow[0]]: '',
         [fieldsToShow[1]]: '',
     });
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [visibleCards, setVisibleCards] = useState([]);
+    const [hasMoreData, setHasMoreData] = useState(true);
 
     const addArticle = () => {
         setAdding(true);
@@ -41,7 +45,32 @@ const GetDataFromUrl = ({ url, fieldsToShow, modalFieldsToShow }) => {
             });
     }, [url]);
 
+    useEffect(() => {
+        const startIndex = (currentPage - 1) * 6;
+        const endIndex = startIndex + 6;
+        const currentVisibleCards = data.slice(startIndex, endIndex);
+        setVisibleCards(currentVisibleCards);
+    }, [data, currentPage]);
+
     const cardColumns = cardRow === 3 ? 'col-md-4' : 'col-md-6';
+
+    const fetchMoreData = () => {
+        const nextPage = currentPage + 1;
+        fetch(`${url}?page=${nextPage}`)
+            .then((response) => response.json())
+            .then((newData) => {
+                if (newData.length === 0) {
+                    setHasMoreData(false);
+                } else {
+                    const updatedData = [...data, ...newData];
+                    Store.dispatch(setData(updatedData));
+                    setCurrentPage(nextPage);
+                }
+            })
+            .catch((error) => {
+                console.log('error during getting more data', error);
+            });
+    };
 
     const viewClick = (item) => {
         setSelectedItem(item);
@@ -133,7 +162,7 @@ const GetDataFromUrl = ({ url, fieldsToShow, modalFieldsToShow }) => {
                 <p>Loading...</p>
             ) : (
                 <div className="row">
-                    {data.map((item) => (
+                    {visibleCards.map((item) => (
                         <div key={item.id} className={cardColumns}>
                             <div className={`card mb-4 ${item.colorClass}`}>
                                 <div className="card-body">
@@ -174,6 +203,11 @@ const GetDataFromUrl = ({ url, fieldsToShow, modalFieldsToShow }) => {
                         </div>
                     ))}
                 </div>
+            )}
+            {hasMoreData && (
+                <button className="btn btn-primary" onClick={fetchMoreData}>
+                    Show More
+                </button>
             )}
 
             <Modal
