@@ -2,13 +2,16 @@ import React from 'react';
 import GetDataFromUrl from './GetDataFromUrl';
 
 const Home = () => {
+    const fieldsToShow = ['title', 'body'];
+    const modalFieldsToShow = ['title', 'body'];
     return (
         <div>
-            <h1>Home</h1>
-            <p>Welcome to the Home Page</p>
+            <h1>Article</h1>
             <GetDataFromUrl
                 url="https://jsonplaceholder.typicode.com/posts"
-                fieldsToShow={['title', 'body']}
+                fieldsToShow={fieldsToShow}
+                modalFieldsToShow={modalFieldsToShow}
+                currentPage="home"
             />
         </div>
     );

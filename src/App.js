@@ -13,7 +13,7 @@ function App() {
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
                     <ul className="navbar-nav">
                         <li className="nav-item mx-3">
-                            <Link to="/">Home</Link>
+                            <Link to="/">Article</Link>
                         </li>
                         <li className="nav-item mx-3">
                             <Link to="/User">User</Link>
