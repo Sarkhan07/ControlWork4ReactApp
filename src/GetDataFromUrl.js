@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { setData } from './Action';
+import { setData } from './Action'; // Импортируйте действия из соответствующего файла
 import Store from './Store';
-import Modal from './Modal';
+import Modal from './Modal'; // Подразумевается, что у вас есть компонент Modal
 
 const GetDataFromUrl = ({ url, fieldsToShow, modalFieldsToShow }) => {
     const [loading, setLoading] = useState(true);
@@ -9,6 +9,23 @@ const GetDataFromUrl = ({ url, fieldsToShow, modalFieldsToShow }) => {
     const [selectedItem, setSelectedItem] = useState(null);
     const [editingItem, setEditingItem] = useState(null);
     const data = Store.getState().data;
+    const [adding, setAdding] = useState(false);
+    const [newItem, setNewItem] = useState({
+        [fieldsToShow[0]]: '',
+        [fieldsToShow[1]]: '',
+    });
+
+    const addArticle = () => {
+        setAdding(true);
+    };
+
+    const createItem = () => {
+        setNewItem({
+            [fieldsToShow[0]]: '',
+            [fieldsToShow[1]]: '',
+        });
+        setAdding(false);
+    };
 
     useEffect(() => {
         fetch(url)
@@ -75,6 +92,42 @@ const GetDataFromUrl = ({ url, fieldsToShow, modalFieldsToShow }) => {
                     {cardRow === 3 ? 'Make small cards' : 'Make big cards'}
                 </button>
             </div>
+
+            <div className="d-flex justify-content-end mb-2">
+                <button className="btn btn-success mr-2" onClick={addArticle}>
+                    Add Article
+                </button>
+            </div>
+
+            {adding && (
+                <div>
+                    <input
+                        type="text"
+                        placeholder={fieldsToShow[0]}
+                        value={newItem[fieldsToShow[0]]}
+                        onChange={(e) =>
+                            setNewItem({
+                                ...newItem,
+                                [fieldsToShow[0]]: e.target.value,
+                            })
+                        }
+                    />
+                    <input
+                        type="text"
+                        placeholder={fieldsToShow[1]}
+                        value={newItem[fieldsToShow[1]]}
+                        onChange={(e) =>
+                            setNewItem({
+                                ...newItem,
+                                [fieldsToShow[1]]: e.target.value,
+                            })
+                        }
+                    />
+                    <button className="btn btn-success" onClick={createItem}>
+                        Create
+                    </button>
+                </div>
+            )}
             {loading ? (
                 <p>Loading...</p>
             ) : (
