@@ -3,7 +3,7 @@ import { setData } from './Action';
 import Store from './Store';
 import Modal from './Modal';
 
-const GetDataFromUrl = ({ url, fieldsToShow, modalFieldsToShow }) => {
+const GetDataFromUrl = ({ url, fieldsToShow, modalFieldsToShow, page }) => {
     const [loading, setLoading] = useState(true);
     const [cardRow, setCardRow] = useState(3);
     const [selectedItem, setSelectedItem] = useState(null);
@@ -169,7 +169,11 @@ const GetDataFromUrl = ({ url, fieldsToShow, modalFieldsToShow }) => {
                                     <strong>
                                         <h2>{item[fieldsToShow[0]]}</h2>
                                     </strong>
-                                    <p>{item[fieldsToShow[1]]}</p>
+                                    {page === 'photo' ? (
+                                        <img src={item.url} alt={item.title} />
+                                    ) : (
+                                        <p>{item[fieldsToShow[1]]}</p>
+                                    )}
 
                                     <button
                                         className="btn btn-primary mr-2"

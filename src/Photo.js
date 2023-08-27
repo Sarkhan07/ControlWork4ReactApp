@@ -1,3 +1,5 @@
+// Photo.js
+
 import React from 'react';
 import GetDataFromUrl from './GetDataFromUrl';
 
@@ -11,7 +13,7 @@ const Photo = () => {
                 url="https://jsonplaceholder.typicode.com/photos"
                 fieldsToShow={fieldsToShow}
                 modalFieldsToShow={modalFieldsToShow}
-                currentPage="photo"
+                page="photo"
             />
         </div>
     );
